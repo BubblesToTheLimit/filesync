@@ -1,7 +1,8 @@
 import pytest
 
-from os import path
 from filesync import check
+
+from os import walk
 
 source_example = [
     "fileA",
@@ -10,7 +11,7 @@ source_example = [
 ]
 
 destination_example = [
-    "fileA"
+    "fileA",
     "folder1/fileB"
 ]
 
@@ -20,7 +21,7 @@ def test_source_list_generation_from_file(mocker):
     """
     single_file = source_example[0]
     
-    mocker.patch("os.path.isfile", return_values=[True])
+    mocker.patch("os.path.isfile", return_value=True)
     assert check.generate_source_list(single_file) == [single_file]
 
 
@@ -28,11 +29,12 @@ def test_destination_list_generation(mocker):
     """
     Given a destination containing directories, the function should correctly return a list.
     """
-    test_directory = "somedir"
+    test_directory = "."
 
-    mocker.patch("os.fwalk", return_values=[
-        (test_directory, ["folder1"], ["fileA"], 1),
-        (test_directory + "/folder1", [], ["fileB"], 1)
-    ])
+    mocker.patch("os.walk", return_value=iter([
+        (test_directory, ["folder1"], ["fileA"]),
+        (test_directory + "/folder1", [], ["fileB"])
+    ]))
+    mocker.patch("os.path.isdir", return_value=True)
 
     assert check.generate_destination_list(test_directory) == destination_example
