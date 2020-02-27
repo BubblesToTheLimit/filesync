@@ -16,7 +16,10 @@ example_destination = [
 ]
 
 example_diff = (
-    ["fileA", "fileB"],
+    [
+        ("fileA", "fileA"),
+        ("fileB", "folder1/fileB")
+    ],
     ["fileC"]
 )
 
@@ -49,7 +52,7 @@ def test_difference(mocker):
     """
     Given source and destination list, this function should generate 2 lists.
     """
-    mocker.patch("check.generate_destination_list", return_value=example_destination)
-    mocker.patch("check.generate_source_list", return_value=example_source)
+    mocker.patch("filesync.check.generate_destination_list", return_value=example_destination)
+    mocker.patch("filesync.check.generate_source_list", return_value=example_source)
 
     assert check.difference(example_source, example_destination) == example_diff
