@@ -13,5 +13,5 @@ def test_failure_if_insufficient_args_given():
 
     parser = cli.create_parser()
     for args in insufficient_args:
-        with raises(SystemExit):
+        with pytest.raises(SystemExit):
             parser.parse_args(args)
