@@ -1,7 +1,7 @@
 filesync
 ========
 
-CLI for filesync purposes. 
+CLI for filesync purposes. WIP
 
 Checks that all files from a source directory are backed up to some (sub-) path in the destination directory.
 
