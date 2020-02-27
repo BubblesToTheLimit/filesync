@@ -1,3 +1,5 @@
+import pytest
+
 from os import path
 from filesync import check
 
@@ -18,8 +20,8 @@ def test_source_list_generation_from_file(mocker):
     """
     single_file = source_example[0]
     
-    mocker.mock("os.path.isfile", return_values=True)
-    assert check.generate_source_list[single_file] == [single_file]
+    mocker.patch("os.path.isfile", return_values=[True])
+    assert check.generate_source_list(single_file) == [single_file]
 
 
 def test_destination_list_generation(mocker):
@@ -28,7 +30,7 @@ def test_destination_list_generation(mocker):
     """
     test_directory = "somedir"
 
-    mocker.mock("os.fwalk", return_values=[
+    mocker.patch("os.fwalk", return_values=[
         (test_directory, ["folder1"], ["fileA"], 1),
         (test_directory + "/folder1", [], ["fileB"], 1)
     ])
